@@ -1,0 +1,181 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "resourceEnvironmentName": {
+      "type": "string"      
+    },
+    "serviceName": {
+      "type": "string"
+    },
+    "aspSize": {
+      "type": "string",
+      "defaultValue": "1"
+    },
+    "aspInstances": {
+      "type": "int",
+      "defaultValue": 1
+    },
+    "azureAdTenantId": {
+      "type": "string"
+    },
+    "azureAdClientId": {
+      "type": "string"
+    },
+    "PDSAppInsightsInstrumentationKey": {
+      "type": "securestring"
+    },
+    "PDSAllocationCosmoDbAuthKey": {
+      "type": "securestring"
+    },
+    "AllocationsAzureSearchApiKey": {
+      "type": "securestring"
+    },
+    "sharedKeyVaultName": {
+      "type": "string"
+    }
+  },
+  "variables": {
+    "deploymentUrlBase": "https://raw.githubusercontent.com/SkillsFundingAgency/funding-platform-building-blocks/master/templates/",
+    "resourceNamePrefix": "[toLower(concat('pds-', parameters('resourceEnvironmentName'), '-', parameters('serviceName')))]",
+    "appServiceName": "[concat(variables('resourceNamePrefix'), '-as')]",
+    "appServicePlanName": "[concat(variables('resourceNamePrefix'), '-asp')]"
+  },
+  "resources": [
+    {
+      "apiVersion": "2017-05-10",
+      "name": "app-service-plan",
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(variables('deploymentUrlBase'),'app-service-plan.json')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "appServicePlanName": {
+            "value": "[variables('appServicePlanName')]"
+          },
+          "aspSize": {
+            "value": "[parameters('aspSize')]"
+          },
+          "aspInstances": {
+            "value": "[parameters('aspInstances')]"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "2017-05-10",
+      "name": "app-service",
+      "type": "Microsoft.Resources/deployments",
+      "dependsOn": [
+        "app-service-plan"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(variables('deploymentUrlBase'),'app-service.json')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "appServiceName": {
+            "value": "[variables('appServiceName')]"
+          },
+          "appServicePlanName": {
+            "value": "[variables('appServicePlanName')]"
+          },
+          "appServicePlanResourceGroup": {
+            "value": "[resourceGroup().name]"
+          },
+          "appServiceAppSettings": {
+            "value": [
+              {
+                "name": "AzureAd:Instance",
+                "value": "[environment().authentication.loginEndpoint]"
+              },
+              {
+                "name": "AzureAd:TenantId",
+                "value": "[parameters('azureAdTenantId')]"
+              },
+              {
+                "name": "AzureAd:ClientId",
+                "value": "[parameters('azureAdClientId')]"
+              },
+              {
+                "name": "AzureAd:Audience",
+                "value": "[parameters('azureAdClientId')]"
+              },
+              {
+                "name": "AzureAd:ClientSecret",
+                "value": "[concat('@Microsoft.KeyVault(VaultName=', parameters('sharedKeyVaultName'), ';SecretName=AllocationStatementApiClientSecret)')]"
+              },
+              {
+                "name": "PdsApplicationInsights:InstrumentationKey",
+                "value": "[parameters('PDSAppInsightsInstrumentationKey')]"
+              },
+              {
+                "name": "PdsApplicationInsights:Environment",
+                "value": "[parameters('resourceEnvironmentName')]"
+              },
+              {
+                "name": "Logging:LogLevel:Default",
+                "value": "Information"
+              },
+              {
+                "name": "Logging:ApplicationInsights:LogLevel:Default",
+                "value": "Information"
+              },
+              {
+                "name": "Logging:ApplicationInsights:LogLevel:Microsoft",
+                "value": "Error"
+              },
+              {
+                "name": "AllocationsCosmosDb:ServiceEndpoint",
+                "value": "[concat('https://pds-cosmos-allocations-', parameters('resourceEnvironmentName'), '.documents.azure.com:443/')]"
+              },
+              {
+                "name": "AllocationsCosmosDb:AuthKeyOrResourceToken",
+                "value": "[parameters('PDSAllocationCosmoDbAuthKey')]"
+              },
+              {
+                "name": "AllocationsCosmosDb:DatabaseName",
+                "value": "adults"
+              },
+              {
+                "name": "AllocationsCosmosDb:CollectionName",
+                "value": "statements"
+              },
+              {
+                "name": "AllocationsAzureSearchService:Name",
+                "value": "[concat('pds-azs-allocations-', parameters('resourceEnvironmentName'))]"
+              },
+              {
+                "name": "AllocationsAzureSearchService:QueryApiKey",
+                "value": "[parameters('AllocationsAzureSearchApiKey')]"
+              },
+              {
+                "name": "AllocationsAzureSearchService:LocalAuthoritySearchIndexName",
+                "value": "la-index"
+              },
+              {
+                "name": "AllocationsAzureSearchService:ProviderSearchIndexName",
+                "value": "provider-index"
+              },
+              {
+                "name": "AllocationsAzureSearchService:LocalAuthoritySearchFirstPageSize",
+                "value": "10"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "AppServiceName": {
+      "type": "string",
+      "value": "[variables('appServiceName')]"
+    }
+  }
+}
