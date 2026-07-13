@@ -107,7 +107,7 @@ In order to run the application locally a valid `appsettings.json` file will nee
 
 - **`AllocationsCosmosDb:CollectionName`** 
   The unique name of the target container inside the designated Cosmos DB database where allocation records are physically stored.
-- 
+
 - **`AllocationsCosmosDb:AuthKeyOrResourceToken`** 
   The secret value for allocation cosmos db resource.
 
