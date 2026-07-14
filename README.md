@@ -27,8 +27,8 @@ In order to run the application locally a valid `appsettings.json` file will nee
 ```json
 {
   "PdsApplicationInsights": {
-    "InstrumentationKey": "[app insights instrumentation key]",
-    "Environment": "LocalDevelopment"
+    "InstrumentationKey": "",
+    "Environment": "local"
   },
   "Logging": {
     "ApplicationInsights": {

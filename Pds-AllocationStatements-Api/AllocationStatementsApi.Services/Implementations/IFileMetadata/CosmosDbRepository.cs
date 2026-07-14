@@ -70,7 +70,7 @@ namespace AllocationStatementsApi.Services.Implementations.IFileMetadata
         /// <summary>
         /// The document client.
         /// </summary>
-        private CosmosClient _client = null !;
+        private CosmosClient _client = null!;
 
         /// <summary>
         /// Gets the Container.
@@ -444,7 +444,7 @@ namespace AllocationStatementsApi.Services.Implementations.IFileMetadata
             {
                 using (var reader = new StreamReader(stream))
                 {
-                    var spBody = reader.ReadToEnd();                    
+                    var spBody = reader.ReadToEnd();
 
                     try
                     {

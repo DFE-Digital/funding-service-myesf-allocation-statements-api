@@ -4,7 +4,6 @@ using AllocationStatementsApi.Services.Interfaces.IAllocationSearchService;
 using AllocationStatementsApi.Services.Interfaces.IAllocationSearchService.Models;
 using Azure.Search.Documents;
 using Azure.Search.Documents.Models;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace AllocationStatementsApi.Services.Tests.Unit

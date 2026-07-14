@@ -8,7 +8,6 @@ using AllocationStatementsApi.Services.Interfaces.IAllocationSearchService;
 using AutoMapper;
 using Azure.Search.Documents;
 using FluentAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
 using Pds.Core.Logging;

@@ -24,13 +24,13 @@ namespace AllocationStatementsApi.Services.Helpers
             configuration.GetSection("AllocationsCosmosDb").Bind(allocationsCosmosConfig);
 
             var sp = services.BuildServiceProvider();
-            var logger = sp.GetService<ILoggerAdapter<CosmosDbRepository>>() !;
+            var logger = sp.GetService<ILoggerAdapter<CosmosDbRepository>>()!;
 
             return new CosmosDbRepository(
                 allocationsCosmosConfig.DatabaseName,
                 allocationsCosmosConfig.CollectionName,
                 allocationsCosmosConfig.ServiceEndpoint,
-                allocationsCosmosConfig.AuthKeyOrResourceToken,                
+                allocationsCosmosConfig.AuthKeyOrResourceToken,
                 logger,
                 allocationsCosmosConfig.MaxRetryAttemptsOnThrottledRequests,
                 allocationsCosmosConfig.MaxRetryWaitTimeInSeconds);

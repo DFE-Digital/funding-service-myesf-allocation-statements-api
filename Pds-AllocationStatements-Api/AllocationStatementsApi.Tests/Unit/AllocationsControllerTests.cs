@@ -1,8 +1,6 @@
 using AllocationStatementsApi.Controllers;
 using AllocationStatementsApi.Enums;
-using AllocationStatementsApi.Helpers;
 using AllocationStatementsApi.Models;
-using AllocationStatementsApi.Services.Enums;
 using AllocationStatementsApi.Services.Implementations.IAllocationSearchService.Models;
 using AllocationStatementsApi.Services.Implementations.IFileMetadata.Models;
 using AllocationStatementsApi.Services.Interfaces;
@@ -11,11 +9,9 @@ using AllocationStatementsApi.Services.Interfaces.IAllocationSearchService.Model
 using AllocationStatementsApi.Services.Interfaces.IFileMetadata.Models;
 using AutoMapper;
 using FluentAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
 using Pds.Core.Logging;
-using System.Linq;
 using FileAction = AllocationStatementsApi.Services.Enums.FileAction;
 
 namespace AllocationStatementsApi.Tests.Unit
@@ -351,7 +347,7 @@ namespace AllocationStatementsApi.Tests.Unit
 
             var expected = new AdultFundingStatementExistsResult
             {
-                AllocationExists = true, 
+                AllocationExists = true,
                 UnreadNewAllocations = 1,
                 UnreadUpdatedAllocations = 0
             };
@@ -383,7 +379,7 @@ namespace AllocationStatementsApi.Tests.Unit
 
             var readApprenticeshipVersion2 = GetRawAllocationStatement(MainUkprn, FundingStatementType.ApprenticeshipNonLevy, 1920, 2);
             readApprenticeshipVersion2.History = readApprenticeshipVersion2.History.Append(readHistory);
-            
+
             var readTraineeshipAllocation1 = GetRawAllocationStatement(MainUkprn, FundingStatementType.Traineeships);
             readTraineeshipAllocation1.History = readTraineeshipAllocation1.History.Append(readHistory);
 

@@ -1,6 +1,5 @@
 using AllocationStatementsApi.Enums;
 using AllocationStatementsApi.Models;
-using AllocationStatementsApi.Services.Enums;
 using AllocationStatementsApi.Services.Implementations.IAllocationSearchService.Models;
 using AllocationStatementsApi.Services.Implementations.IFileMetadata.Models;
 using AllocationStatementsApi.Services.Interfaces.IAllocationSearchService.Models;
@@ -464,7 +463,7 @@ namespace AllocationStatementsApi.Tests
                         Amount = 0
                     },
                 };
-                
+
                 fundingStreams.Add(
                     new FundingStream
                     {
@@ -569,7 +568,7 @@ namespace AllocationStatementsApi.Tests
                 }
             };
             return allocationStatement;
-        }        
+        }
 
         protected static AllocationStatement GetExpectedDFEAdultSkillsFundStatement(string id, string ukprn)
         {

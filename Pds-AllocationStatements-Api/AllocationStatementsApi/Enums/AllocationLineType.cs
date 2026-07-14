@@ -208,7 +208,7 @@ namespace AllocationStatementsApi.Enums
 
         [Display(Name = "Indicative continuing learners in newly devolved areas - free courses for jobs", Description = "indicative continuing learners in newly devolved areas - free courses for april to july (Adult Skills Fund(cfs))", ShortName = "indicative continuing learners in newly devolved areas - free courses for jobs apr_jul")]
         IndicativeContinuingFreeCourses4 = 66,
-        
+
         [Display(Name = "Continuing learners in newly devolved areas - adult skills core", Description = "continuing learners in newly devolved areas - adult skills core for august to march", ShortName = "continuing learners in newly devolved areas - adult skills core aug_mar")]
         ContinuingAdultSkillsCore1 = 67,
 

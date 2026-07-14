@@ -1,5 +1,4 @@
 using AllocationStatementsApi.Services.Enums;
-using System;
 
 namespace AllocationStatementsApi.Services.Interfaces.IFileMetadata.Models
 {

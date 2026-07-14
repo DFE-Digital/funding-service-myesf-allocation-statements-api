@@ -162,11 +162,11 @@ namespace AllocationStatementsApi.Controllers
 
             var unreadNewAllocationsCount = !allocationExists
                 ? 0
-                : (allocationsForUkprn !).AllocationStatements.Count(a => !a.HasBeenRead && a.Version == 1);
+                : (allocationsForUkprn!).AllocationStatements.Count(a => !a.HasBeenRead && a.Version == 1);
 
             var unreadUpdatedAllocationsCount = !allocationExists
                 ? 0
-                : (allocationsForUkprn !).AllocationStatements.Count(a => !a.HasBeenRead && a.Version > 1);
+                : (allocationsForUkprn!).AllocationStatements.Count(a => !a.HasBeenRead && a.Version > 1);
 
             // TODO: Current code is a workaround. Ideally make the below sprocs accept a list of accepted allocation types and filter on that list.
             //var allocationExists = await _allocationRepository.GetAllocationStatementsExistsByUkprn(ukprn);
@@ -219,7 +219,7 @@ namespace AllocationStatementsApi.Controllers
             var searchResult =
                 await _allocationSearchService.SearchProvider(allocationType.ToString(), searchTerm, beforeDateTime, year);
 
-            return GetApiSearchResponse(searchResult) !;
+            return GetApiSearchResponse(searchResult)!;
         }
 
         /// <summary>
@@ -244,7 +244,7 @@ namespace AllocationStatementsApi.Controllers
             var searchResult =
                 await _allocationSearchService.SearchLocalAuthority(allocationType.ToString(), searchTerm, beforeDateTime, year);
 
-            return GetApiSearchResponse(searchResult) !;
+            return GetApiSearchResponse(searchResult)!;
         }
 
         /// <summary>
@@ -275,7 +275,7 @@ namespace AllocationStatementsApi.Controllers
                     year,
                     new Func<IAllocationSearchDocument, bool>(d => d.LaCode == laCodeString));
 
-            return GetApiSearchResponse(searchResult, laCode) !;
+            return GetApiSearchResponse(searchResult, laCode)!;
         }
 
         #endregion
@@ -312,7 +312,7 @@ namespace AllocationStatementsApi.Controllers
             }
 
             IEnumerable<LocalAuthority>? localAuthorities = searchResult.LaGroups?
-                .Select(la => JsonConvert.DeserializeObject<LocalAuthority>(la) !);
+                .Select(la => JsonConvert.DeserializeObject<LocalAuthority>(la)!);
 
             if (localAuthorities != null && laCode.HasValue)
             {
@@ -364,7 +364,7 @@ namespace AllocationStatementsApi.Controllers
         {
             var allocationLine = new AllocationLine
             {
-                Total = (decimal)line.Amount !,
+                Total = (decimal)line.Amount!,
                 Type =
                     line.Name.ToLower().GetEnumFromPropertyValue<AllocationLineType, DisplayAttribute, string>(e => e.ShortName!),
             };

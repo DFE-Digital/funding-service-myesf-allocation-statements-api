@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc.ApplicationModels;
-using Microsoft.Extensions.DependencyInjection;
-using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace AllocationStatementsApi

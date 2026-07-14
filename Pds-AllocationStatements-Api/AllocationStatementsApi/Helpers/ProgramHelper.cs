@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
 using Pds.Core.Telemetry.ApplicationInsights;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using System.Reflection;
 
 namespace AllocationStatementsApi.Helpers
 {

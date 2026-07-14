@@ -1,6 +1,5 @@
 using AllocationStatementsApi.Enums;
 using AllocationStatementsApi.Helpers;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace AllocationStatementsApi.Models
