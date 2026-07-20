@@ -125,3 +125,14 @@ In order to run the application locally a valid `appsettings.json` file will nee
  
 - **`AllocationsAzureSearchService:QueryApiKey`**
   The read-only query API key required to authenticate inbound search requests against the Azure AI Search service instance.
+
+## Build and Test
+
+To build and test locally, you can either use Visual Studio, Visual Studio Code or simply use dotnet CLI `dotnet build` and `dotnet test` more information in dotnet CLI can be found at <https://docs.microsoft.com/en-us/dotnet/core/tools/>.
+
+## Contribute
+
+To contribute,
+
+- If you are part of the team then create a branch for changes and then submit your changes for review by creating a pull request.
+- If you are external to the organisation then fork this repository and make necessary changes and then submit your changes for review by creating a pull request.
