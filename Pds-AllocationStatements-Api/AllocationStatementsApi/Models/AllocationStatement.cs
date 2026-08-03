@@ -10,12 +10,12 @@ namespace AllocationStatementsApi.Models
         /// <summary>
         /// Gets or sets the data store id of this instance.
         /// </summary>
-        public string Id { get; set; }
+        public  required string Id { get; set; }
 
         /// <summary>
         /// Gets or sets the period of the funding statement.
         /// </summary>
-        public string Period { get; set; }
+        public required string Period { get; set; }
 
         /// <summary>
         /// Gets or sets the version number of the funding statement.
@@ -25,7 +25,7 @@ namespace AllocationStatementsApi.Models
         /// <summary>
         /// Gets or sets the Ukprn of the funding statement.
         /// </summary>
-        public string Ukprn { get; set; }
+        public required string Ukprn { get; set; }
 
         /// <summary>
         /// Gets or sets the funding statement type.
@@ -50,6 +50,6 @@ namespace AllocationStatementsApi.Models
         /// <summary>
         /// Gets or sets the funding streams within the funding statement.
         /// </summary>
-        public List<AllocationFundingStream> AllocationFundingStreams { get; set; }
+        public required List<AllocationFundingStream> AllocationFundingStreams { get; set; }
     }
 }

@@ -5,7 +5,6 @@ using AllocationStatementsApi.Services.Implementations.IAllocationSearchService.
 using AllocationStatementsApi.Services.Implementations.IFileMetadata.Models;
 using AllocationStatementsApi.Services.Interfaces;
 using AllocationStatementsApi.Services.Interfaces.IAllocationSearchService;
-using AutoMapper;
 using Azure.Search.Documents;
 using FluentAssertions;
 using Moq;
@@ -28,19 +27,6 @@ namespace AllocationStatementsApi.Tests.Integration
 
         private readonly Mock<IAzureSearchIndexClientManager> _mockAzureSearchIndexClientManager
             = new(MockBehavior.Strict);
-
-        private IMapper _mapper = null!;
-
-        #region Initialization
-
-        [TestInitialize]
-        public void TestInitialize()
-        {
-            SetMapperHelper();
-        }
-
-        #endregion
-
 
         #region SearchProviders Tests
 
@@ -66,8 +52,7 @@ namespace AllocationStatementsApi.Tests.Integration
             var controller = new AllocationsController(
                 new Mock<IAllocationRepository>().Object,
                 new AzureAllocationSearchService(_mockAzureSearchIndexClientManager.Object, ProviderIndexName, LaIndexName, null),
-                _logger,
-                _mapper);
+                _logger);
 
             // Act
             var actualResult = await controller.SearchProvider(
@@ -141,8 +126,7 @@ namespace AllocationStatementsApi.Tests.Integration
             var controller = new AllocationsController(
                 new Mock<IAllocationRepository>().Object,
                 new AzureAllocationSearchService(_mockAzureSearchIndexClientManager.Object, ProviderIndexName, LaIndexName, null),
-                _logger,
-                _mapper);
+                _logger);
 
             // Act
             var actualResult = await controller.SearchProvider(
@@ -198,8 +182,7 @@ namespace AllocationStatementsApi.Tests.Integration
             var controller = new AllocationsController(
                 new Mock<IAllocationRepository>().Object,
                 new AzureAllocationSearchService(_mockAzureSearchIndexClientManager.Object, ProviderIndexName, LaIndexName, null),
-                _logger,
-                _mapper);
+                _logger);
 
             // Act
             var actualResult = await controller.SearchProvider(
@@ -309,8 +292,7 @@ namespace AllocationStatementsApi.Tests.Integration
             var controller = new AllocationsController(
                 new Mock<IAllocationRepository>().Object,
                 new AzureAllocationSearchService(_mockAzureSearchIndexClientManager.Object, ProviderIndexName, LaIndexName, null),
-                _logger,
-                _mapper);
+                _logger);
 
             // Act
             var actualResult = await controller.SearchProvider(
@@ -402,8 +384,7 @@ namespace AllocationStatementsApi.Tests.Integration
             var controller = new AllocationsController(
                 new Mock<IAllocationRepository>().Object,
                 new AzureAllocationSearchService(_mockAzureSearchIndexClientManager.Object, ProviderIndexName, LaIndexName, null),
-                _logger,
-                _mapper);
+                _logger);
 
             // Act
             var actualResult = await controller.SearchProvider(
@@ -547,8 +528,7 @@ namespace AllocationStatementsApi.Tests.Integration
             var controller = new AllocationsController(
                 new Mock<IAllocationRepository>().Object,
                 new AzureAllocationSearchService(_mockAzureSearchIndexClientManager.Object, ProviderIndexName, LaIndexName, null),
-                _logger,
-                _mapper);
+                _logger);
 
             // Act
             var actualResult = await controller.SearchProvider(
@@ -660,8 +640,7 @@ namespace AllocationStatementsApi.Tests.Integration
             var controller = new AllocationsController(
                 new Mock<IAllocationRepository>().Object,
                 new AzureAllocationSearchService(_mockAzureSearchIndexClientManager.Object, ProviderIndexName, LaIndexName, null),
-                _logger,
-                _mapper);
+                _logger);
 
             // Act
             var actualResult = await controller.SearchProvider(
@@ -877,8 +856,7 @@ namespace AllocationStatementsApi.Tests.Integration
             var controller = new AllocationsController(
                 new Mock<IAllocationRepository>().Object,
                 new AzureAllocationSearchService(_mockAzureSearchIndexClientManager.Object, ProviderIndexName, LaIndexName, null),
-                _logger,
-                _mapper);
+                _logger);
 
             // Act
             var actualResult = await controller.SearchProvider(
@@ -1062,8 +1040,7 @@ namespace AllocationStatementsApi.Tests.Integration
             var controller = new AllocationsController(
                 new Mock<IAllocationRepository>().Object,
                 new AzureAllocationSearchService(_mockAzureSearchIndexClientManager.Object, ProviderIndexName, LaIndexName, null),
-                _logger,
-                _mapper);
+                _logger);
 
             // Act
             var actualResult = await controller.SearchProvider(
@@ -1104,8 +1081,7 @@ namespace AllocationStatementsApi.Tests.Integration
             var controller = new AllocationsController(
                 new Mock<IAllocationRepository>().Object,
                 new AzureAllocationSearchService(_mockAzureSearchIndexClientManager.Object, ProviderIndexName, LaIndexName, null),
-                _logger,
-                _mapper);
+                _logger);
 
             // Act
             var actualResult = await controller.SearchLocalAuthority(
@@ -1186,8 +1162,7 @@ namespace AllocationStatementsApi.Tests.Integration
             var controller = new AllocationsController(
                 new Mock<IAllocationRepository>().Object,
                 new AzureAllocationSearchService(_mockAzureSearchIndexClientManager.Object, ProviderIndexName, LaIndexName, null),
-                _logger,
-                _mapper);
+                _logger);
 
             // Act
             var actualResult = await controller.SearchLocalAuthority(
@@ -1250,8 +1225,7 @@ namespace AllocationStatementsApi.Tests.Integration
             var controller = new AllocationsController(
                 new Mock<IAllocationRepository>().Object,
                 new AzureAllocationSearchService(_mockAzureSearchIndexClientManager.Object, ProviderIndexName, LaIndexName, null),
-                _logger,
-                _mapper);
+                _logger);
 
             // Act
             var actualResult = await controller.SearchLocalAuthority(
@@ -1350,8 +1324,7 @@ namespace AllocationStatementsApi.Tests.Integration
             var controller = new AllocationsController(
                 new Mock<IAllocationRepository>().Object,
                 new AzureAllocationSearchService(_mockAzureSearchIndexClientManager.Object, ProviderIndexName, LaIndexName, null),
-                _logger,
-                _mapper);
+                _logger);
 
             // Act
             var actualResult = await controller.SearchLocalAuthority(
@@ -1432,8 +1405,7 @@ namespace AllocationStatementsApi.Tests.Integration
             var controller = new AllocationsController(
                 new Mock<IAllocationRepository>().Object,
                 new AzureAllocationSearchService(_mockAzureSearchIndexClientManager.Object, ProviderIndexName, LaIndexName, null),
-                _logger,
-                _mapper);
+                _logger);
 
             // Act
             var actualResult = await controller.SearchLocalAuthority(
@@ -1547,7 +1519,7 @@ namespace AllocationStatementsApi.Tests.Integration
                 .Returns(_mockAzureSearchIndexClient.Object);
 
             var controller = new AllocationsController(
-                new Mock<IAllocationRepository>().Object, new AzureAllocationSearchService(_mockAzureSearchIndexClientManager.Object, ProviderIndexName, LaIndexName, null), _logger, _mapper);
+                new Mock<IAllocationRepository>().Object, new AzureAllocationSearchService(_mockAzureSearchIndexClientManager.Object, ProviderIndexName, LaIndexName, null), _logger);
 
             // Act
             var actualResult = await controller.SearchLocalAuthority(
@@ -1645,7 +1617,7 @@ namespace AllocationStatementsApi.Tests.Integration
                 .Returns(_mockAzureSearchIndexClient.Object);
 
             var controller = new AllocationsController(
-                new Mock<IAllocationRepository>().Object, new AzureAllocationSearchService(_mockAzureSearchIndexClientManager.Object, ProviderIndexName, LaIndexName, null), _logger, _mapper);
+                new Mock<IAllocationRepository>().Object, new AzureAllocationSearchService(_mockAzureSearchIndexClientManager.Object, ProviderIndexName, LaIndexName, null), _logger);
 
             // Act
             var actualResult = await controller.SearchLocalAuthority(
@@ -1867,7 +1839,7 @@ namespace AllocationStatementsApi.Tests.Integration
                 .Returns(_mockAzureSearchIndexClient.Object);
 
             var controller = new AllocationsController(
-                new Mock<IAllocationRepository>().Object, new AzureAllocationSearchService(_mockAzureSearchIndexClientManager.Object, ProviderIndexName, LaIndexName, null), _logger, _mapper);
+                new Mock<IAllocationRepository>().Object, new AzureAllocationSearchService(_mockAzureSearchIndexClientManager.Object, ProviderIndexName, LaIndexName, null), _logger);
 
             // Act
             var actualResult = await controller.SearchLocalAuthority(
@@ -2074,7 +2046,7 @@ namespace AllocationStatementsApi.Tests.Integration
                 .Returns(_mockAzureSearchIndexClient.Object);
 
             var controller = new AllocationsController(
-                new Mock<IAllocationRepository>().Object, new AzureAllocationSearchService(_mockAzureSearchIndexClientManager.Object, ProviderIndexName, LaIndexName, null), _logger, _mapper);
+                new Mock<IAllocationRepository>().Object, new AzureAllocationSearchService(_mockAzureSearchIndexClientManager.Object, ProviderIndexName, LaIndexName, null), _logger);
 
             // Act
             var actualResult = await controller.SearchLocalAuthority(
@@ -2113,7 +2085,7 @@ namespace AllocationStatementsApi.Tests.Integration
                 .Returns(_mockAzureSearchIndexClient.Object);
 
             var controller = new AllocationsController(
-                new Mock<IAllocationRepository>().Object, new AzureAllocationSearchService(_mockAzureSearchIndexClientManager.Object, ProviderIndexName, LaIndexName, null), _logger, _mapper);
+                new Mock<IAllocationRepository>().Object, new AzureAllocationSearchService(_mockAzureSearchIndexClientManager.Object, ProviderIndexName, LaIndexName, null), _logger);
 
             // Act
             var actualResult = await controller.SearchLocalAuthorityByCode(
@@ -2192,7 +2164,7 @@ namespace AllocationStatementsApi.Tests.Integration
                 .Returns(_mockAzureSearchIndexClient.Object);
 
             var controller = new AllocationsController(
-                new Mock<IAllocationRepository>().Object, new AzureAllocationSearchService(_mockAzureSearchIndexClientManager.Object, ProviderIndexName, LaIndexName, null), _logger, _mapper);
+                new Mock<IAllocationRepository>().Object, new AzureAllocationSearchService(_mockAzureSearchIndexClientManager.Object, ProviderIndexName, LaIndexName, null), _logger);
 
             // Act
             var actualResult = await controller.SearchLocalAuthorityByCode(
@@ -2253,7 +2225,7 @@ namespace AllocationStatementsApi.Tests.Integration
                 .Returns(_mockAzureSearchIndexClient.Object);
 
             var controller = new AllocationsController(
-                new Mock<IAllocationRepository>().Object, new AzureAllocationSearchService(_mockAzureSearchIndexClientManager.Object, ProviderIndexName, LaIndexName, null), _logger, _mapper);
+                new Mock<IAllocationRepository>().Object, new AzureAllocationSearchService(_mockAzureSearchIndexClientManager.Object, ProviderIndexName, LaIndexName, null), _logger);
 
             // Act
             var actualResult = await controller.SearchLocalAuthorityByCode(
@@ -2350,7 +2322,7 @@ namespace AllocationStatementsApi.Tests.Integration
                 .Returns(_mockAzureSearchIndexClient.Object);
 
             var controller = new AllocationsController(
-                new Mock<IAllocationRepository>().Object, new AzureAllocationSearchService(_mockAzureSearchIndexClientManager.Object, ProviderIndexName, LaIndexName, null), _logger, _mapper);
+                new Mock<IAllocationRepository>().Object, new AzureAllocationSearchService(_mockAzureSearchIndexClientManager.Object, ProviderIndexName, LaIndexName, null), _logger);
 
             // Act
             var actualResult = await controller.SearchLocalAuthorityByCode(
@@ -2429,7 +2401,7 @@ namespace AllocationStatementsApi.Tests.Integration
                 .Returns(_mockAzureSearchIndexClient.Object);
 
             var controller = new AllocationsController(
-                new Mock<IAllocationRepository>().Object, new AzureAllocationSearchService(_mockAzureSearchIndexClientManager.Object, ProviderIndexName, LaIndexName, null), _logger, _mapper);
+                new Mock<IAllocationRepository>().Object, new AzureAllocationSearchService(_mockAzureSearchIndexClientManager.Object, ProviderIndexName, LaIndexName, null), _logger);
 
             // Act
             var actualResult = await controller.SearchLocalAuthorityByCode(
@@ -2561,7 +2533,7 @@ namespace AllocationStatementsApi.Tests.Integration
                 .Returns(_mockAzureSearchIndexClient.Object);
 
             var controller = new AllocationsController(
-                new Mock<IAllocationRepository>().Object, new AzureAllocationSearchService(_mockAzureSearchIndexClientManager.Object, ProviderIndexName, LaIndexName, null), _logger, _mapper);
+                new Mock<IAllocationRepository>().Object, new AzureAllocationSearchService(_mockAzureSearchIndexClientManager.Object, ProviderIndexName, LaIndexName, null), _logger);
 
             // Act
             var actualResult = await controller.SearchLocalAuthorityByCode(
@@ -2659,7 +2631,7 @@ namespace AllocationStatementsApi.Tests.Integration
                 .Returns(_mockAzureSearchIndexClient.Object);
 
             var controller = new AllocationsController(
-                new Mock<IAllocationRepository>().Object, new AzureAllocationSearchService(_mockAzureSearchIndexClientManager.Object, ProviderIndexName, LaIndexName, null), _logger, _mapper);
+                new Mock<IAllocationRepository>().Object, new AzureAllocationSearchService(_mockAzureSearchIndexClientManager.Object, ProviderIndexName, LaIndexName, null), _logger);
 
             // Act
             var actualResult = await controller.SearchLocalAuthorityByCode(
@@ -2863,7 +2835,7 @@ namespace AllocationStatementsApi.Tests.Integration
                 .Returns(_mockAzureSearchIndexClient.Object);
 
             var controller = new AllocationsController(
-                new Mock<IAllocationRepository>().Object, new AzureAllocationSearchService(_mockAzureSearchIndexClientManager.Object, ProviderIndexName, LaIndexName, null), _logger, _mapper);
+                new Mock<IAllocationRepository>().Object, new AzureAllocationSearchService(_mockAzureSearchIndexClientManager.Object, ProviderIndexName, LaIndexName, null), _logger);
 
             // Act
             var actualResult = await controller.SearchLocalAuthorityByCode(
@@ -3052,7 +3024,7 @@ namespace AllocationStatementsApi.Tests.Integration
                 .Returns(_mockAzureSearchIndexClient.Object);
 
             var controller = new AllocationsController(
-                new Mock<IAllocationRepository>().Object, new AzureAllocationSearchService(_mockAzureSearchIndexClientManager.Object, ProviderIndexName, LaIndexName, null), _logger, _mapper);
+                new Mock<IAllocationRepository>().Object, new AzureAllocationSearchService(_mockAzureSearchIndexClientManager.Object, ProviderIndexName, LaIndexName, null), _logger);
 
             // Act
             var actualResult = await controller.SearchLocalAuthorityByCode(
@@ -3066,19 +3038,6 @@ namespace AllocationStatementsApi.Tests.Integration
 
 
         #region Private Helpers
-
-        /// <summary>
-        /// Set the mapper config.
-        /// </summary>
-        private void SetMapperHelper()
-        {
-            var mapperConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new AutoMapperProfile());
-            });
-
-            _mapper = mapperConfig.CreateMapper();
-        }
 
         private object[] GetDocumentAndLASearchResult(List<AzureAllocationSearchDocument> documents)
         {

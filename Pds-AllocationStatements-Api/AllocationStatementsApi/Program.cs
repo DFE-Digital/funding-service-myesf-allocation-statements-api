@@ -10,9 +10,6 @@ using System.Reflection;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-// TODO: Replace AutoMapper with free alternative.
-// TODO: After we replace AutoMapper, remove WarningsNotAsErrors NU1901,NU1902,NU1903,NU1904 from .csproj files
-builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 builder.Services.AddApiControllers();
 
 builder.Services.AddFeatureServices(builder.Configuration);
