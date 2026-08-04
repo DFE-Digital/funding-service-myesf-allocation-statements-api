@@ -7,7 +7,6 @@ using AllocationStatementsApi.Services.Interfaces;
 using AllocationStatementsApi.Services.Interfaces.IAllocationSearchService;
 using AllocationStatementsApi.Services.Interfaces.IAllocationSearchService.Models;
 using AllocationStatementsApi.Services.Interfaces.IFileMetadata.Models;
-using AutoMapper;
 using FluentAssertions;
 using Moq;
 using Newtonsoft.Json;
@@ -29,18 +28,6 @@ namespace AllocationStatementsApi.Tests.Unit
 
         private readonly Mock<IAllocationSearchService> _mockAllocationSearchService = new(MockBehavior.Strict);
 
-        private IMapper _mapper = null!;
-
-        #region Initialization
-
-        [TestInitialize]
-        public void TestInitialize()
-        {
-            SetMapperHelper();
-        }
-
-        #endregion
-
         #region GetByUkprn
 
         [TestMethod, TestCategory("Unit")]
@@ -53,7 +40,7 @@ namespace AllocationStatementsApi.Tests.Unit
             });
             const string id = "a47cb3fe-0016-4b57-9fcf-c9313dc97df4";
             _mockAllocationRepository.Setup(o => o.GetAllocationStatementsByUkprn(MainUkprn)).Returns(allocations);
-            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger, _mapper);
+            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger);
 
             var expected = new AdultFundingStatementsResult
             {
@@ -82,7 +69,7 @@ namespace AllocationStatementsApi.Tests.Unit
             });
 
             _mockAllocationRepository.Setup(o => o.GetAllocationStatementsByUkprn(MainUkprn)).Returns(allocations);
-            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger, _mapper);
+            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger);
 
             // Act
             var result = allocationsController.GetByUkprn(MainUkprn, "principalId");
@@ -275,7 +262,7 @@ namespace AllocationStatementsApi.Tests.Unit
             // Arrange
             var allocations = Task.Run(() => new List<IType>());
             _mockAllocationRepository.Setup(o => o.GetAllocationStatementsByUkprn(MainUkprn)).Returns(allocations);
-            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger, _mapper);
+            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger);
 
             // Act
             var result = allocationsController.GetByUkprn(MainUkprn, "principalId");
@@ -302,7 +289,7 @@ namespace AllocationStatementsApi.Tests.Unit
             });
             const string id = "a47cb3fe-0016-4b57-9fcf-c9313dc97df4";
             _mockAllocationRepository.Setup(o => o.GetAllocationStatementById(id, MainUkprn)).Returns(allocations);
-            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger, _mapper);
+            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger);
 
             var expected = new AdultFundingStatementResult
             {
@@ -343,7 +330,7 @@ namespace AllocationStatementsApi.Tests.Unit
 
             _mockAllocationRepository.Setup(o => o.GetAllocationStatementsByUkprn(MainUkprn)).Returns(Task.Run(() => allocations));
 
-            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger, _mapper);
+            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger);
 
             var expected = new AdultFundingStatementExistsResult
             {
@@ -397,7 +384,7 @@ namespace AllocationStatementsApi.Tests.Unit
 
             _mockAllocationRepository.Setup(o => o.GetAllocationStatementsByUkprn(MainUkprn)).Returns(Task.Run(() => allocations));
 
-            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger, _mapper);
+            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger);
 
             var expected = new AdultFundingStatementExistsResult
             {
@@ -421,7 +408,7 @@ namespace AllocationStatementsApi.Tests.Unit
 
             _mockAllocationRepository.Setup(o => o.GetAllocationStatementsByUkprn(MainUkprn)).Returns(Task.Run(() => new List<IType>()));
 
-            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger, _mapper);
+            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger);
 
             var expected = new AdultFundingStatementExistsResult
             {
@@ -451,7 +438,7 @@ namespace AllocationStatementsApi.Tests.Unit
             };
 
             _mockAllocationRepository.Setup(o => o.SetAllocationAsReadById(input.id, input.ukprn, input.principleId)).Returns(Task.Run(() => true));
-            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger, _mapper);
+            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger);
 
             // Act
             var result = allocationsController.SetAllocationAsReadById(input);
@@ -480,7 +467,7 @@ namespace AllocationStatementsApi.Tests.Unit
                 .ReturnsAsync(It.IsAny<IAllocationSearchResult>())
                 .Verifiable();
 
-            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger, _mapper);
+            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger);
 
             // Act
             var result = await allocationsController.SearchProvider(
@@ -498,7 +485,7 @@ namespace AllocationStatementsApi.Tests.Unit
                 .Setup(s => s.SearchProvider(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<int>()))
                 .ReturnsAsync((AzureAllocationSearchResult)null!);
 
-            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger, _mapper);
+            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger);
 
             // Act
             var result = await allocationsController.SearchProvider(
@@ -516,7 +503,7 @@ namespace AllocationStatementsApi.Tests.Unit
                 .Setup(s => s.SearchProvider(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<int>()))
                 .ReturnsAsync(new AzureAllocationSearchResult());
 
-            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger, _mapper);
+            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger);
 
             // Act
             var result = await allocationsController.SearchProvider(
@@ -586,7 +573,7 @@ namespace AllocationStatementsApi.Tests.Unit
                     Documents = documents
                 });
 
-            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger, _mapper);
+            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger);
 
             // Act
             var actualResult = await allocationsController.SearchProvider(
@@ -636,7 +623,7 @@ namespace AllocationStatementsApi.Tests.Unit
                     Documents = documents
                 });
 
-            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger, _mapper);
+            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger);
 
             // Act
             var actualResult = await allocationsController.SearchProvider(
@@ -740,7 +727,7 @@ namespace AllocationStatementsApi.Tests.Unit
                     Documents = documents
                 });
 
-            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger, _mapper);
+            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger);
 
             // Act
             var actualResult = await allocationsController.SearchProvider(
@@ -845,7 +832,7 @@ namespace AllocationStatementsApi.Tests.Unit
                     Documents = documents
                 });
 
-            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger, _mapper);
+            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger);
 
             // Act
             var actualResult = await allocationsController.SearchProvider(
@@ -949,7 +936,7 @@ namespace AllocationStatementsApi.Tests.Unit
                     Documents = documents
                 });
 
-            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger, _mapper);
+            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger);
 
             // Act
             var actualResult = await allocationsController.SearchProvider(
@@ -1087,7 +1074,7 @@ namespace AllocationStatementsApi.Tests.Unit
                     Documents = documents
                 });
 
-            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger, _mapper);
+            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger);
 
             // Act
             var actualResult = await allocationsController.SearchProvider(
@@ -1193,7 +1180,7 @@ namespace AllocationStatementsApi.Tests.Unit
                     Documents = documents
                 });
 
-            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger, _mapper);
+            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger);
 
             // Act
             var actualResult = await allocationsController.SearchProvider(
@@ -1403,7 +1390,7 @@ namespace AllocationStatementsApi.Tests.Unit
                     Documents = documents
                 });
 
-            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger, _mapper);
+            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger);
 
             // Act
             var actualResult = await allocationsController.SearchProvider(
@@ -1598,7 +1585,7 @@ namespace AllocationStatementsApi.Tests.Unit
                     Documents = documents
                 });
 
-            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger, _mapper);
+            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger);
 
             // Act
             var actualResult = await allocationsController.SearchProvider(
@@ -1630,7 +1617,7 @@ namespace AllocationStatementsApi.Tests.Unit
                 .ReturnsAsync(It.IsAny<IAllocationSearchResult>())
                 .Verifiable();
 
-            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger, _mapper);
+            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger);
 
             // Act
             var result = await allocationsController.SearchLocalAuthority(
@@ -1648,7 +1635,7 @@ namespace AllocationStatementsApi.Tests.Unit
                 .Setup(s => s.SearchLocalAuthority(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<int>(), null))
                 .ReturnsAsync((AzureAllocationSearchResult)null!);
 
-            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger, _mapper);
+            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger);
 
             // Act
             var result = await allocationsController.SearchLocalAuthority(
@@ -1666,7 +1653,7 @@ namespace AllocationStatementsApi.Tests.Unit
                 .Setup(s => s.SearchLocalAuthority(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<int>(), null))
                 .ReturnsAsync(new AzureAllocationSearchResult());
 
-            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger, _mapper);
+            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger);
 
             // Act
             var result = await allocationsController.SearchLocalAuthority(
@@ -1740,7 +1727,7 @@ namespace AllocationStatementsApi.Tests.Unit
                     LaGroups = documents.Select(d => d.LaGroup).Distinct().ToList()
                 });
 
-            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger, _mapper);
+            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger);
 
             // Act
             var actualResult = await allocationsController.SearchLocalAuthority(
@@ -1794,7 +1781,7 @@ namespace AllocationStatementsApi.Tests.Unit
                     LaGroups = documents.Select(d => d.LaGroup).Distinct().ToList()
                 });
 
-            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger, _mapper);
+            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger);
 
             // Act
             var actualResult = await allocationsController.SearchLocalAuthority(
@@ -1884,7 +1871,7 @@ namespace AllocationStatementsApi.Tests.Unit
                     LaGroups = documents.Select(d => d.LaGroup).Distinct().ToList()
                 });
 
-            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger, _mapper);
+            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger);
 
             // Act
             var actualResult = await allocationsController.SearchLocalAuthority(
@@ -1975,7 +1962,7 @@ namespace AllocationStatementsApi.Tests.Unit
                     LaGroups = documents.Select(d => d.LaGroup).Distinct().ToList()
                 });
 
-            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger, _mapper);
+            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger);
 
             // Act
             var actualResult = await allocationsController.SearchLocalAuthority(
@@ -2047,7 +2034,7 @@ namespace AllocationStatementsApi.Tests.Unit
                     LaGroups = documents.Select(d => d.LaGroup).Distinct().ToList()
                 });
 
-            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger, _mapper);
+            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger);
 
             // Act
             var actualResult = await allocationsController.SearchLocalAuthority(
@@ -2154,7 +2141,7 @@ namespace AllocationStatementsApi.Tests.Unit
                     LaGroups = documents.Select(d => d.LaGroup).Distinct().ToList()
                 });
 
-            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger, _mapper);
+            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger);
 
             // Act
             var actualResult = await allocationsController.SearchLocalAuthority(
@@ -2245,7 +2232,7 @@ namespace AllocationStatementsApi.Tests.Unit
                     LaGroups = documents.Select(d => d.LaGroup).Distinct().ToList()
                 });
 
-            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger, _mapper);
+            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger);
 
             // Act
             var actualResult = await allocationsController.SearchLocalAuthority(
@@ -2460,7 +2447,7 @@ namespace AllocationStatementsApi.Tests.Unit
                     LaGroups = documents.Select(d => d.LaGroup).Distinct().ToList()
                 });
 
-            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger, _mapper);
+            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger);
 
             // Act
             var actualResult = await allocationsController.SearchLocalAuthority(
@@ -2643,7 +2630,7 @@ namespace AllocationStatementsApi.Tests.Unit
                     LaGroups = documents.Select(d => d.LaGroup).Distinct().ToList()
                 });
 
-            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger, _mapper);
+            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger);
 
             // Act
             var actualResult = await allocationsController.SearchLocalAuthority(
@@ -2667,7 +2654,7 @@ namespace AllocationStatementsApi.Tests.Unit
                     It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<int>(), It.IsAny<Func<IAllocationSearchDocument, bool>>()))
                 .ReturnsAsync((AzureAllocationSearchResult)null!);
 
-            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger, _mapper);
+            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger);
 
             // Act
             var result = await allocationsController.SearchLocalAuthorityByCode(
@@ -2686,7 +2673,7 @@ namespace AllocationStatementsApi.Tests.Unit
                     It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<int>(), It.IsAny<Func<IAllocationSearchDocument, bool>>()))
                 .ReturnsAsync(new AzureAllocationSearchResult());
 
-            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger, _mapper);
+            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger);
 
             // Act
             var result = await allocationsController.SearchLocalAuthorityByCode(
@@ -2720,7 +2707,7 @@ namespace AllocationStatementsApi.Tests.Unit
                 .ReturnsAsync(It.IsAny<IAllocationSearchResult>())
                 .Verifiable();
 
-            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger, _mapper);
+            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger);
 
             // Act
             var result = await allocationsController.SearchLocalAuthorityByCode(
@@ -2793,7 +2780,7 @@ namespace AllocationStatementsApi.Tests.Unit
                     LaGroups = documents.Select(d => d.LaGroup).Distinct().ToList()
                 });
 
-            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger, _mapper);
+            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger);
 
             // Act
             var actualResult = await allocationsController.SearchLocalAuthorityByCode(
@@ -2848,7 +2835,7 @@ namespace AllocationStatementsApi.Tests.Unit
                     LaGroups = documents.Select(d => d.LaGroup).Distinct().ToList()
                 });
 
-            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger, _mapper);
+            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger);
 
             // Act
             var actualResult = await allocationsController.SearchLocalAuthorityByCode(
@@ -2939,7 +2926,7 @@ namespace AllocationStatementsApi.Tests.Unit
                     LaGroups = documents.Select(d => d.LaGroup).Distinct().ToList()
                 });
 
-            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger, _mapper);
+            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger);
 
             // Act
             var actualResult = await allocationsController.SearchLocalAuthorityByCode(
@@ -3031,7 +3018,7 @@ namespace AllocationStatementsApi.Tests.Unit
                     LaGroups = documents.Select(d => d.LaGroup).Distinct().ToList()
                 });
 
-            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger, _mapper);
+            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger);
 
             // Act
             var actualResult = await allocationsController.SearchLocalAuthorityByCode(
@@ -3104,7 +3091,7 @@ namespace AllocationStatementsApi.Tests.Unit
                     LaGroups = documents.Select(d => d.LaGroup).Distinct().ToList()
                 });
 
-            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger, _mapper);
+            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger);
 
             // Act
             var actualResult = await allocationsController.SearchLocalAuthorityByCode(
@@ -3212,7 +3199,7 @@ namespace AllocationStatementsApi.Tests.Unit
                     LaGroups = documents.Select(d => d.LaGroup).Distinct().ToList()
                 });
 
-            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger, _mapper);
+            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger);
 
             // Act
             var actualResult = await allocationsController.SearchLocalAuthorityByCode(
@@ -3304,7 +3291,7 @@ namespace AllocationStatementsApi.Tests.Unit
                     LaGroups = documents.Select(d => d.LaGroup).Distinct().ToList()
                 });
 
-            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger, _mapper);
+            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger);
 
             // Act
             var actualResult = await allocationsController.SearchLocalAuthorityByCode(
@@ -3448,7 +3435,7 @@ namespace AllocationStatementsApi.Tests.Unit
                     LaGroups = documents.Select(d => d.LaGroup).Distinct().ToList()
                 });
 
-            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger, _mapper);
+            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger);
 
             // Act
             var actualResult = await allocationsController.SearchLocalAuthorityByCode(
@@ -3576,7 +3563,7 @@ namespace AllocationStatementsApi.Tests.Unit
                     LaGroups = documents.Select(d => d.LaGroup).Distinct().ToList()
                 });
 
-            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger, _mapper);
+            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger);
 
             // Act
             var actualResult = await allocationsController.SearchLocalAuthorityByCode(
@@ -3608,7 +3595,7 @@ namespace AllocationStatementsApi.Tests.Unit
             var allocationsCount = Task.Run(() => 3);
 
             _mockAllocationRepository.Setup(o => o.GetAllocationStatementCountByCreatedAtDateRange(startDate.ToString("s"), endDate.ToString("s"))).Returns(allocationsCount);
-            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger, _mapper);
+            var allocationsController = new AllocationsController(_mockAllocationRepository.Object, _mockAllocationSearchService.Object, _logger);
 
             // Act
             var result = allocationsController.GetCountByCreatedAtDateRange(startDate.ToString("s"), endDate.ToString("s"));
@@ -3617,19 +3604,6 @@ namespace AllocationStatementsApi.Tests.Unit
 
             // Assert
             result.Result.Should().Be(expected);
-        }
-
-        /// <summary>
-        /// Set the mapper config.
-        /// </summary>
-        private void SetMapperHelper()
-        {
-            var mapperConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new AutoMapperProfile());
-            });
-
-            _mapper = mapperConfig.CreateMapper();
         }
     }
 }

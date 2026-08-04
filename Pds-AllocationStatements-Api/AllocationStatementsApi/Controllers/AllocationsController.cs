@@ -2,12 +2,13 @@ using AllocationStatementsApi.Enums;
 using AllocationStatementsApi.Helpers;
 using AllocationStatementsApi.Models;
 using AllocationStatementsApi.Services.Enums;
+using AllocationStatementsApi.Services.Extensions;
 using AllocationStatementsApi.Services.Implementations.IAllocationSearchService.Models;
+using AllocationStatementsApi.Services.Implementations.IFileMetadata.Models;
 using AllocationStatementsApi.Services.Interfaces;
 using AllocationStatementsApi.Services.Interfaces.IAllocationSearchService;
 using AllocationStatementsApi.Services.Interfaces.IAllocationSearchService.Models;
 using AllocationStatementsApi.Services.Interfaces.IFileMetadata.Models;
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Pds.Core.Logging;
@@ -24,7 +25,6 @@ namespace AllocationStatementsApi.Controllers
         private readonly IAllocationRepository _allocationRepository;
         private readonly IAllocationSearchService _allocationSearchService;
         private readonly ILoggerAdapter<AllocationsController> _logger;
-        private readonly IMapper _mapper;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AllocationsController"/> class.
@@ -33,13 +33,11 @@ namespace AllocationStatementsApi.Controllers
         /// <param name="allocationRepository">The repository containing allocations.</param>
         /// <param name="allocationSearchService">The service to use for searching for allocations.</param>
         /// <param name="logger">The logger.</param>
-        /// <param name="mapper">The mapper for mapping objects.</param>
-        public AllocationsController(IAllocationRepository allocationRepository, IAllocationSearchService allocationSearchService, ILoggerAdapter<AllocationsController> logger, IMapper mapper)
+        public AllocationsController(IAllocationRepository allocationRepository, IAllocationSearchService allocationSearchService, ILoggerAdapter<AllocationsController> logger)
         {
             _allocationRepository = allocationRepository;
             _allocationSearchService = allocationSearchService;
             _logger = logger;
-            _mapper = mapper;
         }
 
         #region Public actions
@@ -323,7 +321,7 @@ namespace AllocationStatementsApi.Controllers
                 .GroupBy(d => d.Ukprn)?
                 .Select(g => g.OrderByDescending(a => a.Version).First())?
                 .Where(d => !d.ExcludeFromResults)?
-                .Select(a => _mapper.Map<AllocationApiSearchAllocation>(a));
+                .Select(a => a.ToAllocationApiSearchAllocation());
 
             return new AllocationApiSearchResponse
             {
