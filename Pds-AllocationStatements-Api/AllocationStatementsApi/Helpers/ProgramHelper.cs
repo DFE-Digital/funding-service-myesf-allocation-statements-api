@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using Pds.Core.Telemetry.ApplicationInsights;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -16,25 +16,22 @@ namespace AllocationStatementsApi.Helpers
         /// <param name="c">SwaggerGenOptions.</param>
         public static void AddOauth2BearerTokenAuthDefinition(SwaggerGenOptions c)
         {
-            var securityScheme = new OpenApiSecurityScheme
+
+            const string schemeId = JwtBearerDefaults.AuthenticationScheme;
+
+            c.AddSecurityDefinition(schemeId, new OpenApiSecurityScheme
             {
                 Name = "JWT Authentication",
                 Description = "Enter JWT Bearer token",
                 In = ParameterLocation.Header,
                 Type = SecuritySchemeType.Http,
                 Scheme = "bearer", // must be lower case
-                BearerFormat = "JWT",
-                Reference = new OpenApiReference
-                {
-                    Id = JwtBearerDefaults.AuthenticationScheme,
-                    Type = ReferenceType.SecurityScheme
-                }
-            };
+                BearerFormat = "JWT"
+            });
 
-            c.AddSecurityDefinition(securityScheme.Reference.Id, securityScheme);
-            c.AddSecurityRequirement(new OpenApiSecurityRequirement
+            c.AddSecurityRequirement(document => new OpenApiSecurityRequirement
             {
-                { securityScheme, new string[] { } }
+                [new OpenApiSecuritySchemeReference(schemeId, document)] = []
             });
         }
 

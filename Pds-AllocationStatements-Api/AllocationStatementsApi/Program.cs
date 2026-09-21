@@ -1,7 +1,7 @@
 using AllocationStatementsApi;
 using AllocationStatementsApi.Helpers;
 using AllocationStatementsApi.Services.DependencyInjection;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using Pds.Core.ApiAuthentication;
 using Pds.Core.Logging;
 using Pds.Core.Telemetry.ApplicationInsights;
